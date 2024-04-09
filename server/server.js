@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
@@ -8,6 +9,7 @@ const blogRoute = require("./routes/blog.route");
 const quickReviewRoute = require("./routes/quickReview.route");
 const messagesRoute = require("./routes/messages.route");
 const commentsRoute = require("./routes/comments.route");
+const checkoutRoute = require("./routes/checkout.route");
 
 const app = express();
 
@@ -27,5 +29,6 @@ app.use("/api/blog", blogRoute);
 app.use("/api/quickreview", quickReviewRoute);
 app.use("/api/messages", messagesRoute);
 app.use("/api/comments", commentsRoute);
+app.use("/api/checkout", checkoutRoute);
 
 app.listen(3000, () => console.log("Server running on 3000"));

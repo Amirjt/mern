@@ -1,7 +1,6 @@
 const connectToDb = require("../config/db");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
-require("dotenv").config();
 
 const adminAuth = (req, res, next) => {
   const token = req.cookies.token;

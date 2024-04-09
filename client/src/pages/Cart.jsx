@@ -48,6 +48,27 @@ const Cart = () => {
     });
   };
 
+  const paymentHandler = () => {
+    fetch("http://localhost:3000/api/checkout", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ products: cart }),
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        return res.json().then((json) => Promise.reject(json));
+      })
+      .then(({ url }) => {
+        window.location = url;
+      })
+      .catch((e) => {
+        console.error(e.error);
+      });
+  };
+
   return (
     <div>
       <Header />
@@ -136,6 +157,7 @@ const Cart = () => {
                           id="number"
                           className="aspect-square w-10 rounded-full border border-gray-200 bg-gray-100 px-3 py-1.5 text-center text-sm font-semibold text-gray-900  outline-none"
                           placeholder={item.quantity}
+                          disabled={true}
                         />
                         <button
                           onClick={() => increaseHandler(item._id)}
@@ -179,12 +201,9 @@ const Cart = () => {
                 <p className="mb-5 mt-6 text-center text-base font-normal leading-7 text-gray-500">
                   Shipping taxes, and discounts calculated at checkout
                 </p>
-                <button className="w-full rounded-full bg-indigo-600 px-6 py-4 text-center text-lg font-semibold text-white transition-all duration-500 hover:bg-indigo-700 ">
-                  Checkout
-                </button>
               </div>
             </div>
-            <div className="w-3/12 rounded-lg border border-muted p-5 shadow-sm h-fit sticky top-3">
+            <div className="sticky top-3 h-fit w-3/12 rounded-lg border border-muted p-5 shadow-sm">
               <h2 className="font-semibold">Checkout</h2>
               {session.status === "authenticated" ? (
                 <div className="mt-2 flex flex-col gap-2">
@@ -204,6 +223,7 @@ const Cart = () => {
                     </span>
                   </div>
                   <Button
+                    onClick={paymentHandler}
                     className="font-semibold"
                     styles={{
                       backgroundColor: "#4F46E5",
